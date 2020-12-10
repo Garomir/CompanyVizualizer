@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WorkerDetailsActivity">
+
+<ImageView
+    android:id="@+id/ivFoto"
+    android:layout_width="match_parent"
+    android:layout_height="261dp"
+    tools:srcCompat="@tools:sample/avatars" />
+
+<EditText
+    android:id="@+id/etFirstname"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:hint="Enter Firstname!"/>
+
+<EditText
+    android:id="@+id/etLastname"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:hint="Enter Lastname!"/>
+
+<EditText
+    android:id="@+id/etPosition"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:hint="Enter Position!"/>
+
+<EditText
+    android:id="@+id/etSalary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:hint="Enter Salary!"/>
+
+<EditText
+    android:id="@+id/etBirthday"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="20sp"
+    android:ems="10"
+    android:inputType="textPersonName"
+    android:hint="Enter Birthday!"/>
+
+</LinearLayout>

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -14,13 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +76,15 @@ public class WorkersActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Возможно тут чтото будет
+                Worker www = (Worker) myAdapter.getItem(position);
+                Intent intent = new Intent(getApplicationContext(), WorkerDetailsActivity.class);
+                intent.putExtra("workerId", www.getId());
+                intent.putExtra("workerFN", www.getFirstname());
+                intent.putExtra("workerLN", www.getLastname());
+                intent.putExtra("workerPosition", www.getPosition());
+                intent.putExtra("workerSalary", www.getSalary());
+                intent.putExtra("workerBirth", www.getBirthday());
+                startActivity(intent);
             }
         });
     }
@@ -92,8 +106,10 @@ public class WorkersActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.itemAdd:
-                //Открыть Dialog на добавление новой записи в БД
-                showDialog();
+                Intent intent = new Intent(getApplicationContext(), WorkerDetailsActivity.class);
+                intent.putExtra("companyId", companyId);
+                intent.putExtra("departmentId", departmentId);
+                startActivity(intent);
         }
         return true;
     }
@@ -133,24 +149,6 @@ public class WorkersActivity extends AppCompatActivity {
         });
     }
 
-    public void createWorker(Worker worker){
-        Call<Worker> dep = jsonPlaceHolderApi.addWorker(companyId, departmentId, worker);
-
-        dep.enqueue(new Callback<Worker>() {
-            @Override
-            public void onResponse(Call<Worker> call, Response<Worker> response) {
-                workers.clear();
-                getAllWorkers(departmentId);
-                Toast.makeText(getApplicationContext(), "Worker added!", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<Worker> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error: " + t, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     public void deleteWorker(int id){
         Call<Void> call = jsonPlaceHolderApi.deleteWorker(id);
 
@@ -168,7 +166,7 @@ public class WorkersActivity extends AppCompatActivity {
         });
     }
 
-    private void showDialog() {
+    /*private void showDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View dialogView = inflater.inflate(R.layout.dialog_worker, null);
 
@@ -179,6 +177,7 @@ public class WorkersActivity extends AppCompatActivity {
         final EditText etLastname = (EditText) dialogView.findViewById(R.id.etLastname);
         final EditText etPosition = (EditText) dialogView.findViewById(R.id.etPosition);
         final EditText etSalary = (EditText) dialogView.findViewById(R.id.etSalary);
+        final EditText etBirthday = (EditText) dialogView.findViewById(R.id.etBirthday);
 
         builder
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -189,12 +188,13 @@ public class WorkersActivity extends AppCompatActivity {
                         String last = etLastname.getText().toString();
                         String position = etPosition.getText().toString();
                         String salary = etSalary.getText().toString();
+                        String birthday = etBirthday.getText().toString();
                         int sal = Integer.parseInt(salary);
 
                         if (first.length() == 0 || last.length() == 0 || position.length() == 0 || salary.length() == 0){
                             Toast.makeText(getApplicationContext(), "Enter the fields!", Toast.LENGTH_SHORT).show();
                         } else {
-                            createWorker(new Worker(first, last, position, sal));
+                            createWorker(new Worker(first, last, position, sal, birthday));
                         }
                     }
                 })
@@ -207,4 +207,54 @@ public class WorkersActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+    private void showUpdateDialog(Worker worker) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_worker, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+
+        final ImageView ivFoto = (ImageView) dialogView.findViewById(R.id.ivFoto);
+        final EditText etFirstname = (EditText) dialogView.findViewById(R.id.etFirstname);
+        final EditText etLastname = (EditText) dialogView.findViewById(R.id.etLastname);
+        final EditText etPosition = (EditText) dialogView.findViewById(R.id.etPosition);
+        final EditText etSalary = (EditText) dialogView.findViewById(R.id.etSalary);
+        final EditText etBirthday = (EditText) dialogView.findViewById(R.id.etBirthday);
+
+        etFirstname.setText(worker.getFirstname());
+        etLastname.setText(worker.getLastname());
+        etPosition.setText(worker.getPosition());
+        etBirthday.setText(worker.getBirthday());
+        etSalary.setText(String.valueOf(worker.getSalary()));
+        //getImg(worker.getId());
+
+        builder
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Можно передавать строку в активити по нажатию
+                        String first = etFirstname.getText().toString();
+                        String last = etLastname.getText().toString();
+                        String position = etPosition.getText().toString();
+                        String salary = etSalary.getText().toString();
+                        String birthday = etBirthday.getText().toString();
+                        int sal = Integer.parseInt(salary);
+
+                        if (first.length() == 0 || last.length() == 0 || position.length() == 0 || salary.length() == 0){
+                            Toast.makeText(getApplicationContext(), "Enter the fields!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            createWorker(new Worker(first, last, position, sal, birthday));
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }*/
 }

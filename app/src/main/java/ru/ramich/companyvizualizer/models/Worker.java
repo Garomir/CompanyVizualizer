@@ -3,6 +3,8 @@ package ru.ramich.companyvizualizer.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.sql.Date;
+
 public class Worker {
 
     @SerializedName("id")
@@ -20,23 +22,31 @@ public class Worker {
     @SerializedName("salary")
     @Expose
     private int salary;
+    @SerializedName("birthday")
+    @Expose
+    private String birthday;
+    @SerializedName("foto")
+    @Expose
+    private String foto;
 
     public Worker() {
     }
 
-    public Worker(String firstname, String lastname, String position, int salary) {
+    public Worker(String firstname, String lastname, String position, int salary, String birthday) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.position = position;
         this.salary = salary;
+        this.birthday = birthday;
     }
 
-    public Worker(int id, String firstname, String lastname, String position, int salary) {
+    public Worker(int id, String firstname, String lastname, String position, int salary, String birthday) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.position = position;
         this.salary = salary;
+        this.birthday = birthday;
     }
 
     public int getId() {
@@ -77,5 +87,21 @@ public class Worker {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

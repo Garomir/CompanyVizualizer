@@ -11,8 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CompanyVizualizer"
-	    android:usesCleartextTraffic="true">
-        <activity android:name=".WorkersActivity"></activity>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".WorkerDetailsActivity"></activity>
+        <activity android:name=".WorkersActivity" />
         <activity android:name=".DepartmentActivity" />
         <activity android:name=".CompanyActivity">
             <intent-filter>
