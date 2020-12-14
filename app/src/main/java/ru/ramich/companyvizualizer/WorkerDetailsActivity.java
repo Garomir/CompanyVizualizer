@@ -64,6 +64,7 @@ public class WorkerDetailsActivity extends AppCompatActivity {
             etPosition.setText(workerPosition);
             etSalary.setText(String.valueOf(workerSalary));
             etBirthday.setText(workerBirth);
+            getImg(workerId);
         }else if (extras.containsKey("companyId")){
             companyId = extras.getInt("companyId");
             departmentId = extras.getInt("departmentId");

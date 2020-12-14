@@ -9,8 +9,7 @@
 <ImageView
     android:id="@+id/ivFoto"
     android:layout_width="match_parent"
-    android:layout_height="261dp"
-    tools:srcCompat="@tools:sample/avatars" />
+    android:layout_height="261dp" />
 
 <EditText
     android:id="@+id/etFirstname"
