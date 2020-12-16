@@ -9,6 +9,7 @@
 <ImageView
     android:id="@+id/ivFoto"
     android:layout_width="match_parent"
+    android:onClick="onClickImg"
     android:layout_height="261dp" />
 
 <EditText
