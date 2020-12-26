@@ -76,6 +76,6 @@ public interface JSONPlaceHolderApi {
 
     @POST("/structure/worker/img/{id}")
     @Multipart
-    public Call<Void> uploadImg(@Path("id") int id, @Part MultipartBody.Part file);
+    public Call<Void> uploadImg(@Path("id") int id, @Part MultipartBody.Part body);
 }
 
